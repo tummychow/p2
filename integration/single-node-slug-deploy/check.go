@@ -64,6 +64,19 @@ func main() {
 	if err != nil {
 		log.Fatalf("Couldn't get hello running: %s", err)
 	}
+
+	err = uninstallPath("/data/pods/p2-preparer")
+	if err != nil {
+		log.Fatalf("Couldn't uninstall preparer: %s", err)
+	}
+	err = uninstallPath("/data/pods/consul")
+	if err != nil {
+		log.Fatalf("Couldn't uninstall consul: %s", err)
+	}
+	err = uninstallPath("/data/pods/hello")
+	if err != nil {
+		log.Fatalf("Couldn't uninstall hello: %s", err)
+	}
 }
 
 func signManifest(manifestPath string, workdir string) (string, error) {
@@ -290,4 +303,12 @@ func verifyHelloRunning() error {
 	case <-helloPidAppeared:
 		return nil
 	}
+}
+
+func uninstallPath(path string) error {
+	pod, err := pods.ExistingPod(path)
+	if err != nil {
+		return err
+	}
+	return pod.Uninstall()
 }
