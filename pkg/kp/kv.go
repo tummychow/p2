@@ -248,7 +248,7 @@ func (c consulStore) SetPod(key string, manifest pods.Manifest) (time.Duration, 
 		retDur = writeMeta.RequestTime
 	}
 	if err != nil {
-		return retDur, NewKVError("put", key, err)
+		return retDur, err
 	}
 	return retDur, nil
 }
